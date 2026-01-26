@@ -1,0 +1,404 @@
+<!--kg-card-begin: html-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+    .churnkey-bar-chart {
+        width: 100%;
+        max-width: 900px;
+        margin: 2.5em auto;
+        font-family: 'General Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        overflow: hidden;
+        background: white;
+        padding: 24px;
+    }
+    
+    .churnkey-bar-chart-header {
+        background-color: #29241E;
+        color: white;
+        padding: 18px 24px;
+        margin: -24px -24px 24px -24px;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+    
+    .churnkey-bar-chart-canvas-container {
+        position: relative;
+        height: 500px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .churnkey-bar-chart {
+            padding: 16px;
+            margin: 1.5em 0;
+            border-radius: 8px;
+            max-width: 100%;
+        }
+        
+        .churnkey-bar-chart-header {
+            padding: 14px 16px;
+            margin: -16px -16px 20px -16px;
+            font-size: 13px;
+        }
+        
+        .churnkey-bar-chart-canvas-container {
+            height: 450px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .churnkey-bar-chart {
+            padding: 12px;
+        }
+        
+        .churnkey-bar-chart-header {
+            padding: 12px;
+            margin: -12px -12px 16px -12px;
+            font-size: 13px;
+        }
+        
+        .churnkey-bar-chart-canvas-container {
+            height: 500px;
+        }
+    }
+</style>
+
+<div class="churnkey-bar-chart">
+    <div class="churnkey-bar-chart-header">
+        Annual Churn Rate (%)
+    </div>
+    
+    <div class="churnkey-bar-chart-canvas-container">
+        <canvas id="churnkeyChart"></canvas>
+    </div>
+</div>
+
+<script>
+    // Churnkey color palette with gradients
+    const churnkeyColors = {
+        voluntary: {
+            start: '#EB3DEB',  // Purple-500
+            end: '#FF7AFF'     // Purple-400
+        },
+        involuntary: {
+            start: '#FE667F',  // Red-400
+            end: '#FF4F6C'     // Red-400
+        }
+    };
+    
+    // Industry data with involuntary and voluntary churn breakdown
+    const industries = [
+        'Travel and lodging',
+        'Business services',
+        'Education',
+        'Merchandise',
+        'Digital goods',
+        'SaaS',
+        'Insurance',
+        'Personal services',
+        'Leisure'
+    ];
+    
+    // Involuntary churn rates
+    const involuntaryChurn = [8, 10, 10, 9, 11, 8, 3, 9, 6];
+    
+    // Total churn rates
+    const totalChurn = [43, 40, 40, 39, 38, 38, 37, 36, 36];
+    
+    // Calculate voluntary churn (total - involuntary)
+    const voluntaryChurn = totalChurn.map((total, index) => total - involuntaryChurn[index]);
+    
+    // Helper function to detect mobile screen
+    function isMobile() {
+        return window.innerWidth <= 480;
+    }
+    
+    function isTablet() {
+        return window.innerWidth > 480 && window.innerWidth <= 768;
+    }
+    
+    // Helper function to create gradient
+    function createGradient(ctx, chartArea, color1, color2, isHorizontal = true) {
+        if (!chartArea) {
+            return color1;
+        }
+        if (isHorizontal) {
+            const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        } else {
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(1, color2);
+            return gradient;
+        }
+    }
+    
+    // Chart data - stacked bar chart
+    const chartData = {
+        labels: industries,
+        datasets: [
+            {
+                label: 'Involuntary Churn',
+                data: involuntaryChurn,
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    return createGradient(ctx, chartArea, churnkeyColors.involuntary.start, churnkeyColors.involuntary.end, true);
+                },
+                borderRadius: {topLeft: 6, bottomLeft: 6, topRight: 0, bottomRight: 0}, // Rounded on left (start) only
+                borderSkipped: false,
+            },
+            {
+                label: 'Voluntary Churn',
+                data: voluntaryChurn,
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    return createGradient(ctx, chartArea, churnkeyColors.voluntary.start, churnkeyColors.voluntary.end, true);
+                },
+                borderRadius: {topRight: 6, bottomRight: 6, topLeft: 0, bottomLeft: 0}, // Rounded on right (end) only
+                borderSkipped: false,
+            }
+        ]
+    };
+    
+    // Chart configuration
+    const config = {
+        type: 'bar',
+        data: chartData,
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    right: isMobile() ? 10 : 20,
+                    left: isMobile() ? 5 : 0
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: isMobile() ? 'bottom' : 'top',
+                    align: isMobile() ? 'center' : 'end',
+                    labels: {
+                        usePointStyle: true,
+                        padding: isMobile() ? 10 : 15,
+                        font: {
+                            family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                            size: isMobile() ? 12 : (isTablet() ? 13 : 14),
+                            weight: '500'
+                        },
+                        color: '#0C0C0E',
+                        generateLabels: function(chart) {
+                            const original = Chart.defaults.plugins.legend.labels.generateLabels;
+                            const labels = original.call(this, chart);
+                            labels.forEach(label => {
+                                if (label.text === 'Involuntary Churn') {
+                                    label.fillStyle = churnkeyColors.involuntary.start;
+                                } else if (label.text === 'Voluntary Churn') {
+                                    label.fillStyle = churnkeyColors.voluntary.start;
+                                }
+                            });
+                            return labels;
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#29241E',
+                    padding: isMobile() ? 10 : 12,
+                    titleFont: {
+                        family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                        size: isMobile() ? 12 : (isTablet() ? 13 : 14),
+                        weight: '600'
+                    },
+                    bodyFont: {
+                        family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                        size: isMobile() ? 13 : (isTablet() ? 14 : 15)
+                    },
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.parsed.x;
+                            const total = totalChurn[context.dataIndex];
+                            const percentage = ((value / total) * 100).toFixed(0);
+                            return `${label}: ${value}% (${percentage}% of total)`;
+                        },
+                        afterLabel: function(context) {
+                            if (context.datasetIndex === 1) {
+                                const total = totalChurn[context.dataIndex];
+                                return `Total: ${total}%`;
+                            }
+                            return '';
+                        }
+                    },
+                    displayColors: true,
+                    cornerRadius: 8,
+                    filter: function(tooltipItem) {
+                        return tooltipItem.parsed.x !== 0;
+                    }
+                },
+                datalabels: {
+                    anchor: 'center',
+                    align: 'center',
+                    color: 'white',
+                    font: {
+                        family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                        size: isMobile() ? 11 : (isTablet() ? 12 : 13),
+                        weight: '600'
+                    },
+                    formatter: function(value, context) {
+                        // Hide labels for very small segments, especially on mobile
+                        const threshold = isMobile() ? 3 : 2;
+                        if (value < threshold) return '';
+                        return value + '%';
+                    },
+                    textStrokeColor: 'rgba(0, 0, 0, 0.3)',
+                    textStrokeWidth: 1,
+                    padding: isMobile() ? 3 : 4
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    beginAtZero: true,
+                    max: 45,
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                            size: isMobile() ? 11 : (isTablet() ? 12 : 13)
+                        },
+                        color: '#0C0C0E',
+                        stepSize: 5,
+                        maxRotation: 0,
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Annual Churn Rate (%)',
+                        font: {
+                            family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                            size: isMobile() ? 12 : (isTablet() ? 13 : 14),
+                            weight: '500'
+                        },
+                        color: '#0C0C0E',
+                        padding: {top: isMobile() ? 8 : 10, bottom: 0}
+                    }
+                },
+                y: {
+                    stacked: true,
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+                            size: isMobile() ? 13 : (isTablet() ? 14 : 15),
+                            weight: '500'
+                        },
+                        color: '#0C0C0E',
+                        padding: isMobile() ? 8 : (isTablet() ? 10 : 12),
+                        maxRotation: 0,
+                        autoSkip: false
+                    },
+                    categoryPercentage: isMobile() ? 0.7 : 0.8,
+                    barPercentage: isMobile() ? 0.9 : 0.85
+                }
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeOutCubic',
+                onComplete: function() {
+                    // Update gradients after chart is drawn
+                    updateGradients(chart);
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        },
+        plugins: [
+            ChartDataLabels,
+            {
+                id: 'whiteBorder',
+                afterDatasetsDraw: function(chart) {
+                    const ctx = chart.ctx;
+                    const meta0 = chart.getDatasetMeta(0); // Involuntary dataset
+                    
+                    ctx.save();
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 1;
+                    
+                    // Draw white line between segments for each bar
+                    // For horizontal bars, bar.x is the right edge of the bar
+                    meta0.data.forEach((bar) => {
+                        if (bar && bar.x !== undefined && bar.y !== undefined) {
+                            // Get the x position where involuntary ends (right edge)
+                            const x = bar.x;
+                            const yTop = bar.y - bar.height / 2;
+                            const yBottom = bar.y + bar.height / 2;
+                            
+                            ctx.beginPath();
+                            ctx.moveTo(x, yTop);
+                            ctx.lineTo(x, yBottom);
+                            ctx.stroke();
+                        }
+                    });
+                    
+                    ctx.restore();
+                }
+            }
+        ]
+    };
+    
+    // Function to update gradients
+    function updateGradients(chart) {
+        const chartArea = chart.chartArea;
+        if (!chartArea) return;
+        
+        const ctx = chart.ctx;
+        
+        // Update involuntary churn gradients
+        const involuntaryGradients = industries.map(() => 
+            createGradient(ctx, chartArea, churnkeyColors.involuntary.start, churnkeyColors.involuntary.end, true)
+        );
+        
+        // Update voluntary churn gradients
+        const voluntaryGradients = industries.map(() => 
+            createGradient(ctx, chartArea, churnkeyColors.voluntary.start, churnkeyColors.voluntary.end, true)
+        );
+        
+        chart.data.datasets[0].backgroundColor = involuntaryGradients;
+        chart.data.datasets[1].backgroundColor = voluntaryGradients;
+        chart.update('none');
+    }
+    
+    // Initialize chart
+    const ctx = document.getElementById('churnkeyChart').getContext('2d');
+    const chart = new Chart(ctx, config);
+    
+    // Update gradients immediately and on resize
+    setTimeout(() => updateGradients(chart), 100);
+    
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(function() {
+            updateGradients(chart);
+            // Update chart to reflect responsive changes
+            chart.update('none');
+        }, 150);
+    });
+</script>
+<!--kg-card-end: html-->

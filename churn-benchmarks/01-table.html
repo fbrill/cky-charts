@@ -1,0 +1,184 @@
+<!--kg-card-begin: html-->
+<style>
+    .churnkey-industry-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 2.5em auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-family: 'General Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .churnkey-industry-table thead {
+        background-color: #29241E;
+        color: white;
+    }
+    
+    .churnkey-industry-table th {
+        padding: 18px 24px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+    
+    .churnkey-industry-table th:nth-child(2),
+    .churnkey-industry-table th:nth-child(3) {
+        text-align: right;
+    }
+    
+    .churnkey-industry-table tbody tr {
+        border-bottom: 1px solid #E5E7EB;
+        transition: all 0.25s ease;
+        background: white;
+        position: relative;
+    }
+    
+    .churnkey-industry-table tbody tr:last-child {
+        border-bottom: none;
+    }
+    
+    .churnkey-industry-table td {
+        padding: 16px 24px;
+        font-size: 15px;
+        line-height: 1.5;
+        border:1px solid #88827b10;
+        border-collapse: collapse;
+    }
+    
+    .churnkey-industry-table .industry {
+        color: #0C0C0E;
+        font-weight: 500;
+    }
+    
+    .churnkey-industry-table .monthly-churn,
+    .churnkey-industry-table .annual-churn {
+        text-align: right;
+        font-weight: 600;
+        color: #0C0C0E;
+        font-size: 14px;
+        transition: background-color 0.25s ease;
+    }
+    
+    /* Highlight highest churn (Travel and lodging - 4.70% monthly, 43% annual) */
+    .churnkey-industry-table tbody tr:nth-child(1) .monthly-churn {
+        background-color: #FFF1F3;
+        color: #C01048;
+    }
+    
+    .churnkey-industry-table tbody tr:nth-child(1) .annual-churn {
+        background-color: #FFF1F3;
+        color: #C01048;
+    }
+    
+    /* Highlight lowest churn (Personal services & Leisure - 3.70% monthly, 36% annual) */
+    .churnkey-industry-table tbody tr:nth-child(8) .monthly-churn,
+    .churnkey-industry-table tbody tr:nth-child(9) .monthly-churn {
+        background-color: #F9FFEB;
+        color: #157A5F;
+    }
+    
+    .churnkey-industry-table tbody tr:nth-child(8) .annual-churn,
+    .churnkey-industry-table tbody tr:nth-child(9) .annual-churn {
+        background-color: #F9FFEB;
+        color: #157A5F;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .churnkey-industry-table {
+            max-width: 100%;
+            margin: 1.5em 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .churnkey-industry-table th,
+        .churnkey-industry-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        
+        .churnkey-industry-table th {
+            font-size: 12px;
+        }
+        
+        .churnkey-industry-table .monthly-churn,
+        .churnkey-industry-table .annual-churn {
+            font-size: 14px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .churnkey-industry-table th,
+        .churnkey-industry-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+        
+        .churnkey-industry-table th {
+            font-size: 11px;
+        }
+    }
+    </style>
+    
+    <table class="churnkey-industry-table">
+        <thead>
+            <tr>
+                <th>Industry</th>
+                <th>Monthly Churn</th>
+                <th>Annual Churn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="industry">Travel and lodging</td>
+                <td class="monthly-churn">4.70%</td>
+                <td class="annual-churn">43%</td>
+            </tr>
+            <tr>
+                <td class="industry">Business services</td>
+                <td class="monthly-churn">4.20%</td>
+                <td class="annual-churn">40%</td>
+            </tr>
+            <tr>
+                <td class="industry">Education</td>
+                <td class="monthly-churn">4.20%</td>
+                <td class="annual-churn">40%</td>
+            </tr>
+            <tr>
+                <td class="industry">Merchandise</td>
+                <td class="monthly-churn">4.10%</td>
+                <td class="annual-churn">39%</td>
+            </tr>
+            <tr>
+                <td class="industry">Digital goods</td>
+                <td class="monthly-churn">4.00%</td>
+                <td class="annual-churn">38%</td>
+            </tr>
+            <tr>
+                <td class="industry">SaaS</td>
+                <td class="monthly-churn">4.00%</td>
+                <td class="annual-churn">38%</td>
+            </tr>
+            <tr>
+                <td class="industry">Insurance</td>
+                <td class="monthly-churn">3.90%</td>
+                <td class="annual-churn">37%</td>
+            </tr>
+            <tr>
+                <td class="industry">Personal services</td>
+                <td class="monthly-churn">3.70%</td>
+                <td class="annual-churn">36%</td>
+            </tr>
+            <tr>
+                <td class="industry">Leisure</td>
+                <td class="monthly-churn">3.70%</td>
+                <td class="annual-churn">36%</td>
+            </tr>
+        </tbody>
+    </table>
+    <!--kg-card-end: html-->

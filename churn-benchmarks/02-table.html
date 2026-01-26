@@ -1,0 +1,207 @@
+<!--kg-card-begin: html-->
+<style>
+    .churnkey-industry-table {
+        width: 100%;
+        max-width: 800px;
+        margin: 2.5em auto;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-family: 'General Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    .churnkey-industry-table thead {
+        background-color: #29241E;
+        color: white;
+    }
+    
+    .churnkey-industry-table th {
+        padding: 18px 24px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+    
+    .churnkey-industry-table th:nth-child(2),
+    .churnkey-industry-table th:nth-child(3),
+    .churnkey-industry-table th:nth-child(4) {
+        text-align: center;
+    }
+    
+    .churnkey-industry-table tbody tr {
+        border-bottom: 1px solid #E5E7EB;
+        transition: all 0.25s ease;
+        background: white;
+        position: relative;
+    }
+    
+    .churnkey-industry-table tbody tr:last-child {
+        border-bottom: none;
+    }
+    
+    .churnkey-industry-table td {
+        padding: 16px 24px;
+        font-size: 15px;
+        line-height: 1.5;
+        border: 1px solid #88827b10;
+        border-collapse: collapse;
+    }
+    
+    .churnkey-industry-table .industry {
+        color: #0C0C0E;
+        font-weight: 500;
+    }
+    
+    .churnkey-industry-table .total-churn,
+    .churnkey-industry-table .involuntary-churn,
+    .churnkey-industry-table .involuntary-percentage {
+        text-align: center;
+        font-weight: 600;
+        color: #0C0C0E;
+        font-size: 14px;
+        transition: background-color 0.25s ease;
+    }
+    
+    /* Highlight Digital goods row with light pink/red background */
+    .churnkey-industry-table tbody tr:nth-child(1) {
+        background-color: #FFF1F3;
+    }
+    
+    .churnkey-industry-table tbody tr:nth-child(1) .total-churn,
+    .churnkey-industry-table tbody tr:nth-child(1) .involuntary-churn,
+    .churnkey-industry-table tbody tr:nth-child(1) .involuntary-percentage {
+        color: #C01048;
+    }
+    
+    /* Highlight SaaS row with light yellow/beige background */
+    .churnkey-industry-table tbody tr:nth-child(6) {
+        background-color: #FFFBF0;
+    }
+    
+    .churnkey-industry-table tbody tr:nth-child(6) .total-churn,
+    .churnkey-industry-table tbody tr:nth-child(6) .involuntary-churn,
+    .churnkey-industry-table tbody tr:nth-child(6) .involuntary-percentage {
+        color: #B54708;
+    }
+    
+    /* Highlight Insurance row with light green background */
+    .churnkey-industry-table tbody tr:nth-child(9) {
+        background-color: #F9FFEB;
+    }
+    
+    .churnkey-industry-table tbody tr:nth-child(9) .total-churn,
+    .churnkey-industry-table tbody tr:nth-child(9) .involuntary-churn,
+    .churnkey-industry-table tbody tr:nth-child(9) .involuntary-percentage {
+        color: #157A5F;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .churnkey-industry-table {
+            max-width: 100%;
+            margin: 1.5em 0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .churnkey-industry-table th,
+        .churnkey-industry-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        
+        .churnkey-industry-table th {
+            font-size: 12px;
+        }
+        
+        .churnkey-industry-table .total-churn,
+        .churnkey-industry-table .involuntary-churn,
+        .churnkey-industry-table .involuntary-percentage {
+            font-size: 14px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .churnkey-industry-table th,
+        .churnkey-industry-table td {
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+        
+        .churnkey-industry-table th {
+            font-size: 11px;
+        }
+    }
+    </style>
+    
+    <table class="churnkey-industry-table">
+        <thead>
+            <tr>
+                <th>Industry</th>
+                <th>Total annual churn rate</th>
+                <th>Annual involuntary churn rate</th>
+                <th>Involuntary churn as a % of total churn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="industry">Digital goods</td>
+                <td class="total-churn">38%</td>
+                <td class="involuntary-churn">11%</td>
+                <td class="involuntary-percentage">29%</td>
+            </tr>
+            <tr>
+                <td class="industry">Business services</td>
+                <td class="total-churn">40%</td>
+                <td class="involuntary-churn">10%</td>
+                <td class="involuntary-percentage">26%</td>
+            </tr>
+            <tr>
+                <td class="industry">Personal services</td>
+                <td class="total-churn">36%</td>
+                <td class="involuntary-churn">9%</td>
+                <td class="involuntary-percentage">25%</td>
+            </tr>
+            <tr>
+                <td class="industry">Education</td>
+                <td class="total-churn">40%</td>
+                <td class="involuntary-churn">10%</td>
+                <td class="involuntary-percentage">24%</td>
+            </tr>
+            <tr>
+                <td class="industry">Merchandise</td>
+                <td class="total-churn">39%</td>
+                <td class="involuntary-churn">9%</td>
+                <td class="involuntary-percentage">23%</td>
+            </tr>
+            <tr>
+                <td class="industry">SaaS</td>
+                <td class="total-churn">38%</td>
+                <td class="involuntary-churn">8%</td>
+                <td class="involuntary-percentage">22%</td>
+            </tr>
+            <tr>
+                <td class="industry">Travel and lodging</td>
+                <td class="total-churn">43%</td>
+                <td class="involuntary-churn">8%</td>
+                <td class="involuntary-percentage">18%</td>
+            </tr>
+            <tr>
+                <td class="industry">Leisure</td>
+                <td class="total-churn">36%</td>
+                <td class="involuntary-churn">6%</td>
+                <td class="involuntary-percentage">17%</td>
+            </tr>
+            <tr>
+                <td class="industry">Insurance</td>
+                <td class="total-churn">37%</td>
+                <td class="involuntary-churn">3%</td>
+                <td class="involuntary-percentage">9%</td>
+            </tr>
+        </tbody>
+    </table>
+    <!--kg-card-end: html-->
+
