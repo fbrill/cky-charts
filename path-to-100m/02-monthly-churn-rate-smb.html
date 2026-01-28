@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monthly Churn Rate for SMB SaaS Companies - Charts</title>
+
+    <!-- Handwritten font for annotations -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.45.1/dist/apexcharts.min.js"></script>
+
+    <style>
+      /* ===========================================
+       CHURNKEY CHART STYLES - REUSABLE
+       =========================================== */
+
+      /* Design Tokens */
+      :root {
+        --ck-font-family:
+          "General Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, sans-serif;
+        --ck-color-dark: #1f1a14;
+        --ck-color-text: #29241e;
+        --ck-color-text-muted: #8c7b6f;
+        --ck-color-border: #f8efe6;
+        --ck-color-bg: #fff;
+
+        /* Chart colors - primary palette */
+        --ck-color-purple: #bb1dcf;
+        --ck-color-purple-light: #f23655;
+        --ck-color-red: #f23655;
+        --ck-color-red-light: #155eef;
+        --ck-color-blue: #155eef;
+        --ck-color-blue-light: #239274;
+        --ck-color-green: #239274;
+        --ck-color-green-light: #37c69f;
+        --ck-color-orange: #dc6803;
+        --ck-color-orange-light: #f7b200;
+
+        /* Semantic colors */
+        --ck-color-positive-bg: #f9ffeb;
+        --ck-color-positive-text: #157a5f;
+        --ck-color-negative-bg: #fff1f3;
+        --ck-color-negative-text: #c01048;
+
+        /* Spacing & Sizing */
+        --ck-radius: 12px;
+        --ck-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      /* Page background for development preview */
+      body {
+        background: #f5f5f5;
+        padding: 20px;
+        padding-top: 70px;
+        margin: 0;
+      }
+
+      /* ===========================================
+         DEV TOOLBAR - Not included in Ghost export
+         =========================================== */
+      .dev-toolbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 75px;
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-family: var(--ck-font-family);
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      }
+
+      .dev-toolbar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .dev-toolbar-logo {
+        color: #F7B200;
+        font-weight: 700;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .dev-toolbar select {
+        background: #2a2a2a;
+        color: #fff;
+        border: 1px solid #444;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-family: var(--ck-font-family);
+        cursor: pointer;
+        min-width: 250px;
+      }
+
+      .dev-toolbar select:hover {
+        border-color: #666;
+      }
+
+      .dev-toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .dev-toolbar-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #fff;
+        background: #333;
+        border: 1px solid #444;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: var(--ck-font-family);
+      }
+
+      .dev-toolbar-btn:hover {
+        background: #444;
+        border-color: #555;
+      }
+
+      .dev-toolbar-btn.success {
+        background: #166534;
+        border-color: #22c55e;
+      }
+
+      .dev-toolbar-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* Base chart container */
+      .ck-chart {
+        width: 100%;
+        max-width: 800px;
+        margin: 2.5em auto;
+        font-family: var(--ck-font-family);
+        box-shadow: var(--ck-shadow);
+        border-radius: var(--ck-radius);
+        overflow: hidden;
+        background: var(--ck-color-bg);
+      }
+
+      /* Chart title (inside white area) */
+      .ck-chart-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--ck-color-text);
+        margin: 0;
+        padding: 28px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid var(--ck-color-border);
+      }
+
+      .ck-chart-area {
+        padding: 28px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .ck-chart {
+          padding: 16px;
+          margin: 1.5em 0;
+          border-radius: 8px;
+          max-width: 100%;
+        }
+
+        .ck-chart-title {
+          font-size: 20px;
+          margin-bottom: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .ck-chart {
+          padding: 12px;
+        }
+
+        .ck-chart-title {
+          font-size: 18px;
+        }
+      }
+
+      /* Chart footer with annotations */
+      .ck-chart-footer {
+        padding: 16px 24px 24px;
+        border-top: 1px solid var(--ck-color-border);
+      }
+
+      .ck-chart-annotation {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--ck-color-text);
+        line-height: 1.5;
+      }
+
+      .ck-chart-annotation + .ck-chart-annotation {
+        margin-top: 10px;
+      }
+
+      .ck-chart-annotation-dot {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .ck-chart-annotation-dot.purple {
+        background: var(--ck-color-purple);
+      }
+
+      .ck-chart-annotation-dot.blue {
+        background: var(--ck-color-blue);
+      }
+
+      .ck-chart-annotation-dot.red {
+        background: var(--ck-color-red);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- DEV TOOLBAR - Not included in Ghost export -->
+    <div class="dev-toolbar">
+      <div class="dev-toolbar-left">
+        <div class="dev-toolbar-logo">
+          Chart Builder
+          </div>
+          <select id="chart-nav" onchange="if(this.value) window.location.href = this.value">
+            <option value="01-monthly-churn-rate-consumer.html">Monthly Churn Rate - Consumer</option>
+            <option value="02-monthly-churn-rate-smb.html" selected>Monthly Churn Rate - SMB SaaS</option>
+            <option value="03-nrr-as-companies-scale.html">NRR as Companies Scale (All Segments)</option>
+            <option value="04-nrr-as-companies-scale.html">NRR as Companies Scale</option>
+          </select>
+      </div>
+    </div>
+
+    <div id="ghost-content">
+    <!--
+  Churnkey Charts - Monthly Churn Rate for SMB SaaS Companies
+-->
+
+    <script>
+      /* ===========================================
+   CHURNKEY APEXCHARTS CONFIG - REUSABLE
+   =========================================== */
+
+      const ChurnkeyCharts = {
+        // Color palette
+        colors: {
+          primary: [
+            "#155EEF",
+            "#F23655",
+            "#239274",
+            "#DC6803",
+            "#BB1DCF",
+            "#8B5CF6",
+          ],
+          purple: "#BB1DCF",
+          red: "#F23655",
+          blue: "#155EEF",
+          green: "#239274",
+          orange: "#DC6803",
+          dark: "#1F1A14",
+          text: "#29241E",
+          textMuted: "#8C7B6F",
+          border: "#F8EFE6",
+          gridLine: "#D0C0B0",
+        },
+
+        // Font stack
+        fontFamily:
+          "'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif",
+
+        // Detect device
+        isMobile: () => window.innerWidth <= 480,
+        isTablet: () => window.innerWidth > 480 && window.innerWidth <= 768,
+
+        // Get responsive font size
+        fontSize: (desktop, tablet, mobile) => {
+          if (ChurnkeyCharts.isMobile()) return mobile || desktop - 2;
+          if (ChurnkeyCharts.isTablet()) return tablet || desktop - 1;
+          return desktop;
+        },
+
+        // Base chart options - merge with your specific config
+        getBaseOptions: function () {
+          return {
+            chart: {
+              fontFamily: this.fontFamily,
+              toolbar: {
+                show: false,
+              },
+              zoom: {
+                enabled: false,
+              },
+              animations: {
+                enabled: true,
+                easing: "easeinout",
+                speed: 800,
+              },
+            },
+            colors: this.colors.primary,
+            stroke: {
+              curve: "smooth",
+              width: 4,
+            },
+            markers: {
+              size: 8,
+              strokeWidth: 3,
+              strokeColors: "#fff",
+              hover: {
+                size: 10,
+              },
+            },
+            grid: {
+              borderColor: this.colors.gridLine,
+              strokeDashArray: 4,
+              xaxis: {
+                lines: {
+                  show: true,
+                },
+              },
+              yaxis: {
+                lines: {
+                  show: true,
+                },
+              },
+              padding: {
+                top: 10,
+                right: 50,
+                bottom: 10,
+                left: 40,
+              },
+            },
+            xaxis: {
+              labels: {
+                style: {
+                  colors: this.colors.text,
+                  fontSize: this.fontSize(16, 15, 14) + "px",
+                  fontFamily: this.fontFamily,
+                  fontWeight: 500,
+                },
+                rotate: 0,
+                rotateAlways: false,
+                trim: false,
+                hideOverlappingLabels: false,
+              },
+              axisBorder: {
+                show: true,
+                color: this.colors.border,
+              },
+              axisTicks: {
+                show: true,
+                color: this.colors.border,
+              },
+            },
+            yaxis: {
+              labels: {
+                style: {
+                  colors: this.colors.text,
+                  fontSize: this.fontSize(16, 15, 14) + "px",
+                  fontFamily: this.fontFamily,
+                  fontWeight: 500,
+                },
+              },
+            },
+            legend: {
+              position: "bottom",
+              horizontalAlign: "center",
+              fontSize: this.fontSize(17, 16, 15) + "px",
+              fontFamily: this.fontFamily,
+              fontWeight: 500,
+              markers: {
+                width: 14,
+                height: 14,
+                radius: 14,
+              },
+              itemMargin: {
+                horizontal: 16,
+                vertical: 8,
+              },
+            },
+            tooltip: {
+              theme: "dark",
+              style: {
+                fontSize: this.fontSize(17, 16, 15) + "px",
+                fontFamily: this.fontFamily,
+              },
+              x: {
+                show: true,
+              },
+              marker: {
+                show: true,
+              },
+            },
+            responsive: [
+              {
+                breakpoint: 768,
+                options: {
+                  chart: {
+                    height: 400,
+                  },
+                  legend: {
+                    position: "bottom",
+                  },
+                },
+              },
+              {
+                breakpoint: 480,
+                options: {
+                  chart: {
+                    height: 300,
+                  },
+                  xaxis: {
+                    labels: {
+                      rotate: -45,
+                      style: {
+                        fontSize: "14px",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          };
+        },
+
+        // Create a line chart with Churnkey styling
+        createLineChart: function (
+          selector,
+          seriesData,
+          categories,
+          customOptions = {},
+        ) {
+          const baseOptions = this.getBaseOptions();
+
+          const options = this.deepMerge(
+            baseOptions,
+            {
+              chart: {
+                type: "line",
+                height: 450,
+              },
+              series: seriesData,
+              xaxis: {
+                categories: categories,
+              },
+            },
+            customOptions,
+          );
+
+          const chart = new ApexCharts(
+            document.querySelector(selector),
+            options,
+          );
+          chart.render();
+          return chart;
+        },
+
+        // Deep merge utility
+        deepMerge: function (...objects) {
+          const result = {};
+          for (const obj of objects) {
+            for (const key in obj) {
+              if (
+                obj[key] &&
+                typeof obj[key] === "object" &&
+                !Array.isArray(obj[key])
+              ) {
+                result[key] = this.deepMerge(result[key] || {}, obj[key]);
+              } else {
+                result[key] = obj[key];
+              }
+            }
+          }
+          return result;
+        },
+      };
+    </script>
+
+    <!-- ===========================================
+     CHART: Monthly Churn Rate for SMB SaaS Companies
+     =========================================== -->
+
+    <div class="ck-chart" id="churn-chart-container">
+      <div class="ck-chart-title">
+        <svg width="42" height="42" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M25.9271 2.25729C22.8855 0.468466 19.8428 -0.200597 15.8916 0.0511082C12.6603 0.256918 8.08692 1.97547 6.47199 3.5904C5.58636 4.47603 5.6129 4.52551 8.24935 6.95471L10.9256 9.42013L12.9281 8.41726C14.8152 7.47175 19.85 7.22937 20.665 8.04436C21.404 8.78334 19.6869 9.65714 17.6123 9.5969C15.3358 9.53128 13.1529 10.2527 12.9435 11.1398C12.685 12.2337 14.2397 13.0756 15.4853 12.5162C16.177 12.2054 17.5033 12.1598 18.4323 12.4155C20.0651 12.8637 20.2086 12.7927 22.7235 10.2821C25.7515 7.25912 25.6891 7.02965 21.414 5.47101C18.5757 4.43623 15.2971 4.47065 12.6269 5.56388C11.5229 6.01602 10.7284 5.99594 10.2368 5.50436C9.64269 4.91024 9.70185 4.65745 10.5416 4.19564C14.4789 2.03104 20.7091 2.24833 24.6693 4.68829C26.5406 5.84176 27.0648 5.94502 27.7196 5.2903C28.8218 4.18811 28.6149 3.83852 25.9271 2.25729ZM30.2607 6.01133C30.0441 6.01133 28.7863 7.09201 27.4654 8.41292L25.0642 10.8142L26.047 13.0125C26.9685 15.072 27.1943 20.1577 26.3998 20.9523C25.739 21.6131 24.6465 19.9297 24.8792 18.6091C25.1742 16.9322 24.6038 14.1451 23.7988 13.3344C22.783 12.3108 21.4019 14.1294 21.9932 15.7109C22.2667 16.442 22.2768 17.8031 22.0165 18.7353C21.5518 20.3983 21.5934 20.4779 24.1509 22.8426L26.7594 25.2539L27.7081 24.0513C29.7297 21.489 30.3604 16.5994 29.0997 13.2677C28.5622 11.8475 28.531 10.9328 29.004 10.4599C29.587 9.8769 29.8329 9.96439 30.4583 10.9777C32.4737 14.2416 32.2471 20 29.9237 24.5608C28.9437 26.4844 28.7842 27.3353 29.279 28.0029C30.1546 29.1833 31.3242 28.0129 33.0452 24.2345C34.5734 20.8791 34.9108 15.134 33.7709 11.8873C32.909 9.43265 30.8652 6.01133 30.2607 6.01133ZM2.84874 7.49825C-1.01576 12.8343 -0.93867 21.7303 3.02049 27.3001L4.13774 28.872L6.81471 26.1951C9.47195 23.5378 9.48594 23.5088 8.68672 22.2599C7.3217 20.1269 7.02123 14.5406 8.20662 13.3344C8.85703 12.6718 9.86063 14.6256 9.5745 15.9989C9.31025 17.2678 10.1217 21.1656 10.7893 21.8333C10.8958 21.9397 11.4411 21.5686 12.0008 21.0089C12.733 20.2768 12.885 19.6321 12.5415 18.7135C12.2787 18.0111 12.2052 16.7565 12.3784 15.9257C12.6681 14.536 12.4842 14.2057 10.0829 11.8045L7.47301 9.19457L6.57161 10.6238C6.07573 11.4094 5.42531 12.8242 5.12592 13.7676C4.47729 15.8124 4.77346 20.7246 5.63255 22.1588C6.05672 22.8677 5.97999 23.4442 5.38157 24.0427C4.52641 24.8978 4.51279 24.8892 3.74799 23.0258C2.00398 18.7791 2.39553 13.4438 4.74011 9.50938C5.69996 7.8984 5.73725 7.45881 4.97819 6.69975C4.12663 5.84819 4.01332 5.8905 2.84874 7.49825ZM18.5183 22.0656C17.6875 22.2388 16.433 22.1653 15.7306 21.9025C14.5445 21.4593 14.2659 21.6124 11.8216 24.0566C9.41534 26.4629 9.25255 26.7505 9.91875 27.4167C12.0346 29.5325 18.0153 30.36 21.542 29.0255C22.8952 28.5135 23.8765 28.4665 24.3039 28.8939C25.1745 29.7645 24.7435 30.128 21.6288 31.1474C17.5674 32.4773 12.8446 31.8756 9.36371 29.5852C7.99905 28.6874 7.54404 28.6547 6.61933 29.3866C5.54152 30.2399 5.55514 30.2958 7.11342 31.4023C9.55768 33.1388 14.1067 34.5763 17.1572 34.5763C20.4086 34.5763 24.5865 33.3041 26.9458 31.5952L28.6439 30.3654L25.9088 27.6304C23.5119 25.2334 23.0938 24.9753 22.527 25.5421C21.494 26.5751 16.8091 27.3761 14.87 26.8512L13.0937 26.37L13.9977 25.4661C14.5208 24.943 15.3451 24.6959 15.9536 24.8806C17.0733 25.2194 20.656 24.5446 21.3337 23.867C22.1264 23.0742 20.0511 21.7461 18.5183 22.0656Z" fill="#F7B200"/>
+          <path d="M17.3751 20.3815C18.8389 20.3815 19.6633 19.6665 20.1597 18.7916L18.5361 17.8746C18.2921 18.3121 17.9808 18.6149 17.4256 18.6149C16.7778 18.6149 16.3236 18.0765 16.3236 17.311V17.2941C16.3236 16.5875 16.761 16.007 17.4256 16.007C17.964 16.007 18.2753 16.3015 18.494 16.7221L20.1176 15.7715C19.6213 14.8713 18.7464 14.2404 17.4508 14.2404C15.6926 14.2404 14.3214 15.5528 14.3214 17.311V17.3278C14.3214 19.1533 15.7431 20.3815 17.3751 20.3815Z" fill="#F7B200"/>
+        </svg>
+        <span>Monthly Churn Rate for SMB SaaS Companies</span>
+      </div>
+      <div id="churn-chart" class="ck-chart-area"></div>
+    </div>
+
+    <script>
+      // Monthly Churn Rate for SMB SaaS Companies
+      (function () {
+        const categories = [
+          "Under $1M ARR",
+          "$1M-$5M ARR",
+          "$5M-$20M ARR",
+          "$20M+ ARR",
+        ];
+
+        const seriesData = [
+          {
+            name: "SMB SaaS",
+            data: [17.7, 12.2, 14.0, 10.7],
+          },
+        ];
+
+        // Create chart
+        ChurnkeyCharts.createLineChart(
+          "#churn-chart",
+          seriesData,
+          categories,
+          {
+            colors: [ChurnkeyCharts.colors.blue],
+            yaxis: {
+              min: 10,
+              max: 19,
+              tickAmount: 6,
+              labels: {
+                formatter: function (val) {
+                  return val.toFixed(0);
+                },
+              },
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            tooltip: {
+              y: {
+                formatter: function (val) {
+                  return val.toFixed(1) + "% monthly churn";
+                },
+              },
+            },
+          },
+        );
+      })();
+    </script>
+    </div>
+  </body>
+</html>
