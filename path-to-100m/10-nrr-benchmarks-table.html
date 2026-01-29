@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Business Model Churn Comparison - Charts</title>
+    <title>Bottom Up SaaS NRR Benchmarks - Charts</title>
 
     <style>
       /* ===========================================
@@ -105,10 +105,11 @@
         height: 33px;
       }
 
-      .churnkey-industry-table {
+      .churnkey-benchmarks-table {
         border-collapse: separate;
         border-spacing: 0;
-        background-color: #FFFBF8;
+        background-color: #fff;
+        width: 100%;
         font-family:
           "General Sans",
           -apple-system,
@@ -119,6 +120,7 @@
           Ubuntu,
           sans-serif;
       }
+
       .churnkey-table-header {
         display: flex;
         justify-content: space-between;
@@ -128,12 +130,12 @@
         padding: 20px;
       }
 
-      .churnkey-industry-table thead {
+     .churnkey-benchmarks-table thead {
         background-color: #DED3C96a;
         color: #1F1A14;
       }
 
-      .churnkey-industry-table th {
+      .churnkey-benchmarks-table th {
         padding: 18px 24px;
         text-align: left;
         font-weight: 600;
@@ -143,23 +145,24 @@
         border-left: 1px solid var(--ck-color-border);
       }
 
-      .churnkey-industry-table th:nth-child(2),
-      .churnkey-industry-table th:nth-child(3),
-      .churnkey-industry-table th:nth-child(4) {
+      .churnkey-benchmarks-table th:first-child {
+        text-align: left;
+      }
+
+      .churnkey-benchmarks-table th:last-child {
         text-align: center;
       }
 
-      .churnkey-industry-table tbody tr {
+      .churnkey-benchmarks-table tbody tr {
         border-bottom: 1px solid var(--ck-color-border);
         transition: all 0.25s ease;
-        position: relative;
       }
 
-      .churnkey-industry-table tbody tr:last-child {
+      .churnkey-benchmarks-table tbody tr:last-child {
         border-bottom: none;
       }
 
-      .churnkey-industry-table td {
+      .churnkey-benchmarks-table td {
         padding: 16px 24px;
         font-size: 15px;
         line-height: 1.5;
@@ -167,55 +170,44 @@
         border-collapse: collapse;
       }
 
-      .churnkey-industry-table .business-model {
-        color: #0c0c0e;
-        font-weight: 500;
+      .churnkey-benchmarks-table td:first-child {
+        text-align: left;
+        font-weight: 400;
       }
 
-      .churnkey-industry-table .annual-churn-rate,
-      .churnkey-industry-table .annual-involuntary-churn-rate,
-      .churnkey-industry-table .involuntary-percentage {
+      .churnkey-benchmarks-table td:last-child {
         text-align: center;
         font-weight: 600;
-        color: #0c0c0e;
-        font-size: 14px;
-        transition: background-color 0.25s ease;
       }
 
       /* Responsive adjustments */
       @media (max-width: 768px) {
-        .churnkey-industry-table {
+        .churnkey-benchmarks-table {
           max-width: 100%;
           margin: 1.5em 0;
           border-radius: 8px;
           font-size: 14px;
         }
 
-        .churnkey-industry-table th,
-        .churnkey-industry-table td {
+        .churnkey-benchmarks-table th,
+        .churnkey-benchmarks-table td {
           padding: 12px 16px;
           font-size: 14px;
         }
 
-        .churnkey-industry-table th {
+        .churnkey-benchmarks-table th {
           font-size: 12px;
-        }
-
-        .churnkey-industry-table .annual-churn-rate,
-        .churnkey-industry-table .annual-involuntary-churn-rate,
-        .churnkey-industry-table .involuntary-percentage {
-          font-size: 14px;
         }
       }
 
       @media (max-width: 480px) {
-        .churnkey-industry-table th,
-        .churnkey-industry-table td {
+        .churnkey-benchmarks-table th,
+        .churnkey-benchmarks-table td {
           padding: 10px 12px;
           font-size: 13px;
         }
 
-        .churnkey-industry-table th {
+        .churnkey-benchmarks-table th {
           font-size: 11px;
         }
       }
@@ -251,13 +243,13 @@
           <option value="07-involuntary-churn-plg.html">
             Involuntary Churn for PLG Businesses
           </option>
-          <option value="08-table.html" selected>
+          <option value="08-table.html">
             Business Model Churn Comparison
           </option>
           <option value="09-churn-variance.html">
             Consumer/PLG Churn Variance
           </option>
-          <option value="10-nrr-benchmarks-table.html">
+          <option value="10-nrr-benchmarks-table.html" selected>
             Bottom Up SaaS NRR Benchmarks
           </option>
         </select>
@@ -269,7 +261,7 @@
       <div class="churnkey-table-container">
         <div class="churnkey-table-header">
           <div class="churnkey-table-title">
-            Business Model Churn Comparison
+            Bottom Up SaaS NRR Benchmarks
           </div>
           <div>
             <svg
@@ -324,27 +316,21 @@
             </svg>
           </div>
         </div>
-        <table class="churnkey-industry-table">
+        <table class="churnkey-benchmarks-table">
           <thead>
             <tr>
-              <th>Business model</th>
-              <th>Annual churn rate</th>
-              <th>Annual involuntary churn rate</th>
-              <th>Involuntary churn as a % of overall churn</th>
+              <th>Benchmark Source</th>
+              <th>Bottom Up SaaS NRR</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="business-model">B2C</td>
-              <td class="annual-churn-rate">39%</td>
-              <td class="annual-involuntary-churn-rate">9%</td>
-              <td class="involuntary-percentage">24%</td>
+              <td>Lennys Benchmarks</td>
+              <td>100% is good</td>
             </tr>
             <tr>
-              <td class="business-model">B2B</td>
-              <td class="annual-churn-rate">38%</td>
-              <td class="annual-involuntary-churn-rate">6%</td>
-              <td class="involuntary-percentage">16%</td>
+              <td>Churnkey Averages</td>
+              <td>107–116% is standard</td>
             </tr>
           </tbody>
         </table>
