@@ -18,12 +18,12 @@
         --ck-color-dark: #1f1a14;
         --ck-color-text: #29241e;
         --ck-color-text-muted: #8c7b6f;
-        --ck-color-border: #f8efe6;
+        --ck-color-border: #88827b1f;
         --ck-color-bg: #fff;
       }
 
       body {
-        background: #f5f5f5;
+        background: #ffff;
         padding: 20px;
         padding-top: 70px;
         margin: 0;
@@ -42,7 +42,7 @@
         padding: 0 20px;
         font-family: var(--ck-font-family);
         z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
 
       .dev-toolbar-left {
@@ -52,7 +52,7 @@
       }
 
       .dev-toolbar-logo {
-        color: #F7B200;
+        color: #f7b200;
         font-weight: 700;
         font-size: 14px;
       }
@@ -74,71 +74,114 @@
       }
 
       /* Table Styles */
-      .churnkey-industry-table {
+      .churnkey-table-container {
         width: 100%;
         max-width: 800px;
         margin: 2.5em auto;
-        border-collapse: separate;
-        border-spacing: 0;
-        font-family: 'General Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
         border-radius: 12px;
         overflow: hidden;
       }
-      
-      .churnkey-industry-table thead {
-        background-color: #29241E;
+
+      .churnkey-table-title {
+        font-size: 24px;
+        font-weight: 600;
         color: white;
+        font-family:
+          "General Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          sans-serif;
       }
-      
+
+      .churnkey-table-logo {
+        width: 146px;
+        height: 33px;
+      }
+
+      .churnkey-industry-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: #FFFBF8;
+        font-family:
+          "General Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Oxygen,
+          Ubuntu,
+          sans-serif;
+      }
+      .churnkey-table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1F1A14;
+        color: white;
+        padding: 20px;
+      }
+
+      .churnkey-industry-table thead {
+        background-color: #DED3C96a;
+        color: #1F1A14;
+      }
+
       .churnkey-industry-table th {
         padding: 18px 24px;
         text-align: left;
         font-weight: 600;
         font-size: 14px;
         letter-spacing: 0.5px;
+        border-right: 1px solid var(--ck-color-border);
+        border-left: 1px solid var(--ck-color-border);
       }
-      
+
       .churnkey-industry-table th:nth-child(2),
       .churnkey-industry-table th:nth-child(3),
       .churnkey-industry-table th:nth-child(4) {
         text-align: center;
       }
-      
+
       .churnkey-industry-table tbody tr {
-        border-bottom: 1px solid #E5E7EB;
+        border-bottom: 1px solid var(--ck-color-border);
         transition: all 0.25s ease;
-        background: white;
         position: relative;
       }
-      
+
       .churnkey-industry-table tbody tr:last-child {
         border-bottom: none;
       }
-      
+
       .churnkey-industry-table td {
         padding: 16px 24px;
         font-size: 15px;
         line-height: 1.5;
-        border: 1px solid #88827b10;
+        border: 1px solid var(--ck-color-border);
         border-collapse: collapse;
       }
-      
+
       .churnkey-industry-table .business-model {
-        color: #0C0C0E;
+        color: #0c0c0e;
         font-weight: 500;
       }
-      
+
       .churnkey-industry-table .annual-churn-rate,
       .churnkey-industry-table .annual-involuntary-churn-rate,
       .churnkey-industry-table .involuntary-percentage {
         text-align: center;
         font-weight: 600;
-        color: #0C0C0E;
+        color: #0c0c0e;
         font-size: 14px;
         transition: background-color 0.25s ease;
       }
-      
+
       /* Responsive adjustments */
       @media (max-width: 768px) {
         .churnkey-industry-table {
@@ -147,31 +190,31 @@
           border-radius: 8px;
           font-size: 14px;
         }
-        
+
         .churnkey-industry-table th,
         .churnkey-industry-table td {
           padding: 12px 16px;
           font-size: 14px;
         }
-        
+
         .churnkey-industry-table th {
           font-size: 12px;
         }
-        
+
         .churnkey-industry-table .annual-churn-rate,
         .churnkey-industry-table .annual-involuntary-churn-rate,
         .churnkey-industry-table .involuntary-percentage {
           font-size: 14px;
         }
       }
-      
+
       @media (max-width: 480px) {
         .churnkey-industry-table th,
         .churnkey-industry-table td {
           padding: 10px 12px;
           font-size: 13px;
         }
-        
+
         .churnkey-industry-table th {
           font-size: 11px;
         }
@@ -183,47 +226,127 @@
     <div class="dev-toolbar">
       <div class="dev-toolbar-left">
         <div class="dev-toolbar-logo">Chart Builder</div>
-        <select id="chart-nav" onchange="if(this.value) window.location.href = this.value">
-          <option value="01-monthly-churn-rate-consumer.html">Monthly Churn Rate - Consumer</option>
-          <option value="02-monthly-churn-rate-smb.html">Monthly Churn Rate - SMB SaaS</option>
-          <option value="03-nrr-as-companies-scale.html">NRR as Companies Scale (All Segments)</option>
-          <option value="04-nrr-as-companies-scale.html">NRR as Companies Scale</option>
-          <option value="05-gross-vs-net-revenue-retention-plg.html">Gross vs Net Revenue Retention (PLG)</option>
-          <option value="06-gross-vs-net-revenue-retention-smb.html">Gross vs Net Revenue Retention (SMB)</option>
-          <option value="07-involuntary-churn-plg.html">Involuntary Churn for PLG Businesses</option>
-          <option value="08-table.html" selected>Business Model Churn Comparison</option>
-          <option value="09-churn-variance.html">Consumer/PLG Churn Variance</option>
+        <select
+          id="chart-nav"
+          onchange="if (this.value) window.location.href = this.value;"
+        >
+          <option value="01-monthly-churn-rate-consumer.html">
+            Monthly Churn Rate - Consumer
+          </option>
+          <option value="02-monthly-churn-rate-smb.html">
+            Monthly Churn Rate - SMB SaaS
+          </option>
+          <option value="03-nrr-as-companies-scale.html">
+            NRR as Companies Scale (All Segments)
+          </option>
+          <option value="04-nrr-as-companies-scale.html">
+            NRR as Companies Scale
+          </option>
+          <option value="05-gross-vs-net-revenue-retention-plg.html">
+            Gross vs Net Revenue Retention (PLG)
+          </option>
+          <option value="06-gross-vs-net-revenue-retention-smb.html">
+            Gross vs Net Revenue Retention (SMB)
+          </option>
+          <option value="07-involuntary-churn-plg.html">
+            Involuntary Churn for PLG Businesses
+          </option>
+          <option value="08-table.html" selected>
+            Business Model Churn Comparison
+          </option>
+          <option value="09-churn-variance.html">
+            Consumer/PLG Churn Variance
+          </option>
         </select>
       </div>
     </div>
 
     <div id="ghost-content">
-    <!--kg-card-begin: html-->
-    <table class="churnkey-industry-table">
-      <thead>
-        <tr>
-          <th>Business model</th>
-          <th>Annual churn rate</th>
-          <th>Annual involuntary churn rate</th>
-          <th>Involuntary churn as a % of overall churn</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="business-model">B2C</td>
-          <td class="annual-churn-rate">39%</td>
-          <td class="annual-involuntary-churn-rate">9%</td>
-          <td class="involuntary-percentage">24%</td>
-        </tr>
-        <tr>
-          <td class="business-model">B2B</td>
-          <td class="annual-churn-rate">38%</td>
-          <td class="annual-involuntary-churn-rate">6%</td>
-          <td class="involuntary-percentage">16%</td>
-        </tr>
-      </tbody>
-    </table>
-    <!--kg-card-end: html-->
+      <!--kg-card-begin: html-->
+      <div class="churnkey-table-container">
+        <div class="churnkey-table-header">
+          <div class="churnkey-table-title">
+            Business Model Churn Comparison
+          </div>
+          <div>
+            <svg
+              width="146"
+              height="33"
+              viewBox="0 0 146 33"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M24.3858 2.1231C21.525 0.440615 18.6632 -0.188671 14.9468 0.0480698C11.9076 0.241644 7.60615 1.85803 6.08723 3.37695C5.25425 4.20993 5.27921 4.25646 7.75892 6.54125L10.2761 8.8601L12.1595 7.91685C13.9344 7.02755 18.6699 6.79958 19.4365 7.56612C20.1315 8.26117 18.5165 9.08302 16.5652 9.02636C14.4241 8.96465 12.371 9.64317 12.174 10.4775C11.9309 11.5064 13.3932 12.2982 14.5647 11.7722C15.2153 11.4798 16.4627 11.4369 17.3365 11.6774C18.8723 12.0989 19.0072 12.0322 21.3725 9.67082C24.2205 6.82757 24.1618 6.61174 20.141 5.14576C17.4714 4.17249 14.3877 4.20487 11.8763 5.23311C10.8379 5.65836 10.0906 5.63948 9.62823 5.17712C9.06943 4.61832 9.12507 4.38057 9.91488 3.94621C13.6181 1.9103 19.4779 2.11466 23.2027 4.40957C24.9628 5.49446 25.4558 5.59159 26.0716 4.97579C27.1083 3.93912 26.9137 3.61032 24.3858 2.1231ZM28.4617 5.65395C28.258 5.65395 27.075 6.67039 25.8326 7.91277L23.5741 10.1713L24.4985 12.2389C25.3652 14.176 25.5776 18.9593 24.8303 19.7067C24.2088 20.3282 23.1812 18.7449 23.4001 17.5028C23.6776 15.9256 23.1411 13.3042 22.384 12.5417C21.4286 11.5789 20.1295 13.2894 20.6857 14.7769C20.943 15.4645 20.9524 16.7447 20.7076 17.6215C20.2705 19.1856 20.3096 19.2605 22.7152 21.4846L25.1686 23.7525L26.0609 22.6214C27.9622 20.2115 28.5554 15.6126 27.3697 12.479C26.8642 11.1432 26.8349 10.2829 27.2797 9.83806C27.828 9.28972 28.0594 9.372 28.6475 10.325C30.5431 13.3949 30.33 18.811 28.1447 23.1006C27.223 24.9099 27.0729 25.7102 27.5383 26.3381C28.3619 27.4483 29.4619 26.3476 31.0807 22.7937C32.518 19.6379 32.8353 14.2343 31.7633 11.1806C30.9525 8.87188 29.0303 5.65395 28.4617 5.65395ZM2.67938 7.05248C-0.955372 12.0713 -0.882866 20.4385 2.84092 25.6771L3.89175 27.1556L6.40957 24.6378C8.90884 22.1385 8.922 22.1112 8.17029 20.9366C6.88643 18.9303 6.60382 13.6762 7.71873 12.5417C8.33048 11.9185 9.27441 13.7561 9.00529 15.0477C8.75675 16.2412 9.51992 19.9073 10.1479 20.5353C10.248 20.6354 10.761 20.2864 11.2874 19.76C11.976 19.0713 12.119 18.465 11.7959 17.601C11.5487 16.9403 11.4796 15.7603 11.6425 14.9789C11.915 13.6718 11.742 13.3612 9.4835 11.1027L7.02874 8.64795L6.18092 9.99218C5.71452 10.7311 5.10277 12.0618 4.82118 12.9491C4.21112 14.8724 4.48967 19.4925 5.2977 20.8415C5.69665 21.5082 5.62448 22.0505 5.06163 22.6133C4.25732 23.4176 4.2445 23.4095 3.52517 21.6569C1.88485 17.6627 2.25311 12.6446 4.45831 8.94405C5.3611 7.42884 5.39617 7.01538 4.68224 6.30145C3.8813 5.50051 3.77473 5.5403 2.67938 7.05248ZM17.4174 20.7538C16.636 20.9167 15.456 20.8475 14.7954 20.6003C13.6798 20.1835 13.4178 20.3275 11.1188 22.6265C8.85559 24.8897 8.70249 25.1601 9.32908 25.7867C11.3191 27.7768 16.9443 28.5551 20.2613 27.2999C21.5341 26.8183 22.4571 26.7742 22.8591 27.1762C23.6779 27.995 23.2725 28.3369 20.3429 29.2957C16.523 30.5465 12.0809 29.9806 8.80703 27.8263C7.5235 26.9819 7.09555 26.9512 6.22581 27.6395C5.21207 28.4421 5.22489 28.4948 6.69052 29.5355C8.98948 31.1687 13.268 32.5207 16.1372 32.5207C19.1953 32.5207 23.1248 31.3242 25.3438 29.7169L26.941 28.5602L24.3685 25.9877C22.1141 23.7333 21.7209 23.4905 21.1877 24.0236C20.2161 24.9952 15.8098 25.7486 13.986 25.2549L12.3153 24.8023L13.1655 23.9522C13.6575 23.4601 14.4328 23.2278 15.0051 23.4014C16.0583 23.7201 19.428 23.0855 20.0654 22.4481C20.811 21.7024 18.8591 20.4533 17.4174 20.7538Z"
+                fill="#F7B200"
+              />
+              <path
+                d="M16.3422 19.1699C17.7189 19.1699 18.4943 18.4973 18.9612 17.6744L17.4341 16.812C17.2046 17.2234 16.9119 17.5083 16.3896 17.5083C15.7804 17.5083 15.3531 17.0019 15.3531 16.2818V16.266C15.3531 15.6014 15.7646 15.0554 16.3896 15.0554C16.896 15.0554 17.1888 15.3323 17.3945 15.728L18.9216 14.8339C18.4548 13.9872 17.6319 13.3938 16.4134 13.3938C14.7597 13.3938 13.47 14.6281 13.47 16.2818V16.2977C13.47 18.0146 14.8072 19.1699 16.3422 19.1699Z"
+                fill="#F7B200"
+              />
+              <path
+                d="M55.1836 12.746C54.3251 9.25976 51.5933 7.23047 47.6388 7.23047C43.0859 7.23047 39.0273 10.4565 39.0273 16.5444C39.0273 22.6323 43.0859 25.8583 47.6388 25.8583C51.5933 25.8583 54.3251 23.829 55.1836 20.3428L52.1397 19.5623C51.4372 21.4095 50.1624 22.7363 47.6388 22.7363C44.829 22.7363 42.4615 20.7591 42.4615 16.5444C42.4615 12.3297 44.829 10.3525 47.6388 10.3525C50.1624 10.3525 51.4372 11.6793 52.1397 13.5265L55.1836 12.746Z"
+                fill="white"
+              />
+              <path
+                d="M57.1944 7.23047V25.6502H60.4205V20.1087C60.4205 16.5704 62.0075 15.0875 63.4904 15.0875C64.8173 15.0875 65.4417 15.842 65.4417 17.429V25.6502H68.6677V16.2842C68.6677 13.6045 67.0547 12.3297 64.5831 12.3297C62.6839 12.3297 61.253 13.3183 60.4205 14.6452V7.23047H57.1944Z"
+                fill="white"
+              />
+              <path
+                d="M82.4876 25.6502V12.5378H79.2616V17.7672C79.2616 21.2274 77.8306 23.1006 76.2696 23.1006C75.177 23.1006 74.3965 22.5022 74.3965 20.9412V12.5378H71.1704V21.9038C71.1704 24.5315 72.8615 25.8583 75.203 25.8583C76.8941 25.8583 78.2989 24.9217 79.2616 23.5429V25.6502H82.4876Z"
+                fill="white"
+              />
+              <path
+                d="M88.4076 25.6502V20.9932C88.4076 16.7525 90.0466 15.2176 91.9198 15.2176C92.4662 15.2176 92.8824 15.3476 93.2727 15.5818L93.8711 12.5899C93.3507 12.4338 92.8564 12.3297 92.2841 12.3297C90.8011 12.3297 89.3442 13.1362 88.4076 14.6712V12.5378H85.1815V25.6502H88.4076Z"
+                fill="white"
+              />
+              <path
+                d="M95.3768 12.5378V25.6502H98.6028V20.4209C98.6028 16.9607 100.034 15.0875 101.595 15.0875C102.687 15.0875 103.468 15.6859 103.468 17.2468V25.6502H106.694V16.2842C106.694 13.6566 105.003 12.3297 102.661 12.3297C100.97 12.3297 99.5654 13.2663 98.6028 14.6452V12.5378H95.3768Z"
+                fill="white"
+              />
+              <path
+                d="M109.205 7.23047V25.6502H112.431V19.4583L117.062 25.6502H121.017L115.423 18.5737L120.678 12.5378H116.698L112.431 17.6891V7.23047H109.205Z"
+                fill="white"
+              />
+              <path
+                d="M133.49 18.8078C133.49 15.946 131.747 12.3297 127.376 12.3297C122.875 12.3297 121.08 15.9981 121.08 19.094C121.08 22.19 122.875 25.8583 127.376 25.8583C130.55 25.8583 132.319 24.3494 133.334 22.0339L130.732 21.0713C129.952 22.4241 129.041 23.1006 127.558 23.1006C125.555 23.1006 124.54 21.5916 124.462 20.1347H133.49V18.8078ZM127.376 15.0875C129.093 15.0875 129.9 16.2842 130.186 17.5851H124.54C124.774 16.3363 125.737 15.0875 127.376 15.0875Z"
+                fill="white"
+              />
+              <path
+                d="M133.614 12.5378L138.375 24.8177L136.111 30.9576H139.233L145.998 12.5378H142.772L139.91 20.7591L136.866 12.5378H133.614Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+        </div>
+        <table class="churnkey-industry-table">
+          <thead>
+            <tr>
+              <th>Business model</th>
+              <th>Annual churn rate</th>
+              <th>Annual involuntary churn rate</th>
+              <th>Involuntary churn as a % of overall churn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="business-model">B2C</td>
+              <td class="annual-churn-rate">39%</td>
+              <td class="annual-involuntary-churn-rate">9%</td>
+              <td class="involuntary-percentage">24%</td>
+            </tr>
+            <tr>
+              <td class="business-model">B2B</td>
+              <td class="annual-churn-rate">38%</td>
+              <td class="annual-involuntary-churn-rate">6%</td>
+              <td class="involuntary-percentage">16%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--kg-card-end: html-->
     </div>
   </body>
 </html>
