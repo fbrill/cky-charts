@@ -22,14 +22,23 @@
         --ck-color-bg: #fff;
       }
 
-      body {
-        background: #ffff;
-        padding: 20px;
-        padding-top: 70px;
-        margin: 0;
+      /* Ensure consistent box-sizing */
+      .churnkey-table-container *,
+      .churnkey-table-container *::before,
+      .churnkey-table-container *::after {
+        box-sizing: border-box;
       }
 
-      .dev-toolbar {
+      /* REMOVED: body styles that affect entire Ghost page */
+      /* body {
+        background: #ffff;
+        padding: 12px;
+        padding-top: 70px;
+        margin: 0;
+      } */
+
+      /* COMMENTED OUT: Dev toolbar for development only - remove before publishing to Ghost */
+      /* .dev-toolbar {
         position: fixed;
         top: 0;
         left: 0;
@@ -71,22 +80,32 @@
 
       .dev-toolbar select:hover {
         border-color: #666;
-      }
+      } */
 
       /* Table Styles */
       .churnkey-table-container {
         width: 100%;
         max-width: 800px;
-        margin: 2.5em auto;
+        margin: 1.5em auto; /* Adjusted to work within Ghost pages */
         box-shadow:
           0 4px 6px -1px rgba(0, 0, 0, 0.1),
           0 2px 4px -1px rgba(0, 0, 0, 0.06);
         border-radius: 12px;
         overflow: hidden;
+        box-sizing: border-box; /* Include padding/borders in width calculation */
+      }
+
+      .churnkey-table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #1F1A14;
+        color: white;
+        padding: 12px 16px;
       }
 
       .churnkey-table-title {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 600;
         color: white;
         font-family:
@@ -103,12 +122,20 @@
       .churnkey-table-logo {
         width: 146px;
         height: 33px;
+        flex-shrink: 0;
+      }
+
+      .churnkey-table-scroll-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        /* Prevent any content from causing overflow */
+        max-width: 100%;
       }
 
       .churnkey-benchmarks-table {
         border-collapse: separate;
         border-spacing: 0;
-        background-color: #fff;
+        background-color: #FFFBF8;
         width: 100%;
         font-family:
           "General Sans",
@@ -119,27 +146,19 @@
           Oxygen,
           Ubuntu,
           sans-serif;
+        /* Removed min-width to prevent horizontal scroll */
       }
 
-      .churnkey-table-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #1F1A14;
-        color: white;
-        padding: 20px;
-      }
-
-     .churnkey-benchmarks-table thead {
+      .churnkey-benchmarks-table thead {
         background-color: #DED3C96a;
         color: #1F1A14;
       }
 
       .churnkey-benchmarks-table th {
-        padding: 18px 24px;
+        padding: 10px 14px;
         text-align: left;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 16px;
         letter-spacing: 0.5px;
         border-right: 1px solid var(--ck-color-border);
         border-left: 1px solid var(--ck-color-border);
@@ -156,6 +175,7 @@
       .churnkey-benchmarks-table tbody tr {
         border-bottom: 1px solid var(--ck-color-border);
         transition: all 0.25s ease;
+        position: relative;
       }
 
       .churnkey-benchmarks-table tbody tr:last-child {
@@ -163,8 +183,8 @@
       }
 
       .churnkey-benchmarks-table td {
-        padding: 16px 24px;
-        font-size: 15px;
+        padding: 10px 14px;
+        font-size: 16px;
         line-height: 1.5;
         border: 1px solid var(--ck-color-border);
         border-collapse: collapse;
@@ -172,89 +192,66 @@
 
       .churnkey-benchmarks-table td:first-child {
         text-align: left;
-        font-weight: 400;
+        font-weight: 500;
       }
 
       .churnkey-benchmarks-table td:last-child {
         text-align: center;
-        font-weight: 600;
+        font-weight: 500;
       }
 
-      /* Responsive adjustments */
+      /* Responsive: horizontal scroll on small screens, hide logo */
       @media (max-width: 768px) {
-        .churnkey-benchmarks-table {
-          max-width: 100%;
-          margin: 1.5em 0;
+        .churnkey-table-container {
+          margin: 1em 0;
           border-radius: 8px;
-          font-size: 14px;
+        }
+
+        .churnkey-table-header {
+          padding: 10px 12px;
+        }
+
+        .churnkey-table-logo {
+          display: none;
+        }
+
+        .churnkey-table-title {
+          font-size: 16px;
         }
 
         .churnkey-benchmarks-table th,
         .churnkey-benchmarks-table td {
-          padding: 12px 16px;
+          padding: 10px 12px;
           font-size: 14px;
         }
 
         .churnkey-benchmarks-table th {
-          font-size: 12px;
+          font-size: 14px;
         }
       }
 
       @media (max-width: 480px) {
+        .churnkey-table-header {
+          padding: 8px 10px;
+        }
+
+        .churnkey-table-title {
+          font-size: 14px;
+        }
+
         .churnkey-benchmarks-table th,
         .churnkey-benchmarks-table td {
-          padding: 10px 12px;
+          padding: 8px 10px;
           font-size: 13px;
         }
 
         .churnkey-benchmarks-table th {
-          font-size: 11px;
+          font-size: 13px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- DEV TOOLBAR - Not included in Ghost export -->
-    <div class="dev-toolbar">
-      <div class="dev-toolbar-left">
-        <div class="dev-toolbar-logo">Chart Builder</div>
-        <select
-          id="chart-nav"
-          onchange="if (this.value) window.location.href = this.value;"
-        >
-          <option value="01-monthly-churn-rate-consumer.html">
-            Monthly Churn Rate - Consumer
-          </option>
-          <option value="02-monthly-churn-rate-smb.html">
-            Monthly Churn Rate - SMB SaaS
-          </option>
-          <option value="03-nrr-as-companies-scale.html">
-            NRR as Companies Scale (All Segments)
-          </option>
-          <option value="04-nrr-as-companies-scale.html">
-            NRR as Companies Scale
-          </option>
-          <option value="05-gross-vs-net-revenue-retention-plg.html">
-            Gross vs Net Revenue Retention (PLG)
-          </option>
-          <option value="06-gross-vs-net-revenue-retention-smb.html">
-            Gross vs Net Revenue Retention (SMB)
-          </option>
-          <option value="07-involuntary-churn-plg.html">
-            Involuntary Churn for PLG Businesses
-          </option>
-          <option value="08-table.html">
-            Business Model Churn Comparison
-          </option>
-          <option value="09-churn-variance.html">
-            Consumer/PLG Churn Variance
-          </option>
-          <option value="10-nrr-benchmarks-table.html" selected>
-            Bottom Up SaaS NRR Benchmarks
-          </option>
-        </select>
-      </div>
-    </div>
 
     <div id="ghost-content">
       <!--kg-card-begin: html-->
@@ -263,7 +260,7 @@
           <div class="churnkey-table-title">
             Bottom Up SaaS NRR Benchmarks
           </div>
-          <div>
+          <div class="churnkey-table-logo">
             <svg
               width="146"
               height="33"
@@ -316,6 +313,7 @@
             </svg>
           </div>
         </div>
+        <div class="churnkey-table-scroll-wrapper">
         <table class="churnkey-benchmarks-table">
           <thead>
             <tr>
@@ -334,6 +332,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
       <!--kg-card-end: html-->
     </div>
